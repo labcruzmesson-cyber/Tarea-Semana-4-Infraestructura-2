@@ -127,4 +127,73 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 
 ---
 
-### E. Políticas de Firewall (
+### E. Políticas de Firewall (`Policy & Objects > Firewall Policy`)
+
+![Políticas de Firewall](IMAGES/fortigate_firewall_policies.png)
+
+| ID / Nombre | Interfaz Entrada | Interfaz Salida | Origen | Destino | Servicio | Acción |
+| :--- | :--- | :--- | :--- | :--- | :--- | :---: |
+| **`VPN_TO_JUMPSERVER`** | `ssl.root` | `port2` | `GRP_VPN_USERS` | `HOST_JUMP_SERVER` | `ALL` | **ACCEPT** |
+| **`DENY_VPN_TO_WEB`** | `ssl.root` | `port3` | `all` | `HOST_WEB_SERVER` | `ALL` | **DENY** |
+| **`JUMP_TO_WEB_FILTERED`**| `port2` | `port3` | `HOST_JUMP_SERVER` | `HOST_WEB_SERVER` | `HTTPS`, `RDP`, `SSH` | **ACCEPT** |
+| **`Implicit Deny`** | Any | Any | all | all | ALL | **DENY** |
+
+---
+
+## 5. Evidencias de Cumplimiento y Pruebas de Auditoría
+
+### Requisito 1: Segmentación, DHCP en Cisco (/25) y Enlace WAN
+Concesión de direccionamiento dinámico por DHCP desde el router Cisco hacia los clientes de la VLAN 10 y validación de conectividad WAN hacia el FortiGate.
+
+![DHCP y Direccionamiento en Cisco](IMAGES/cisco_dhcp_vlan10.png)
+![Conectividad WAN Cisco a FortiGate](IMAGES/cisco_wan_connectivity.png)
+![IP Obtenida en Cliente Ubuntu](IMAGES/client_dhcp_ip.png)
+
+---
+
+### Requisito 2: Establecimiento de SSL-VPN y Acceso Exclusivo al Jump Server
+Demostración del túnel SSL-VPN activo y verificación de alcance positivo hacia el Jump Server (`10.25.68.130`).
+
+![Túnel SSL-VPN Conectado](IMAGES/sslvpn_connected_cli.png)
+![Monitor de Sesiones SSL-VPN en FortiGate](IMAGES/fortigate_sslvpn_monitor.png)
+![Ping Exitoso a Jump Server](IMAGES/ping_jumpserver_success.png)
+
+---
+
+### Requisito 3: Bloqueo Estricto de Acceso Directo al Web Server (Menor Privilegio)
+Demostración de denegación de tráfico desde la máquina remota hacia el Web Server (`10.25.68.138`) con registro explícito en los logs del firewall.
+
+![Intento de Ping y Conexión Denegado](IMAGES/ping_webserver_denied.png)
+![Log de Rechazo en FortiGate Forward Traffic](IMAGES/fortigate_log_deny_webserver.png)
+
+---
+
+### Requisito 4: Filtrado Granular Inter-Servidores (Jump Server -> Web Server)
+Pruebas de sockets TCP desde el Jump Server hacia el Web Server evidenciando que únicamente los servicios autorizados (**HTTPS: 443**, **RDP: 3389**, **SSH: 22**) responden favorablemente, mientras que otros servicios y tráfico ICMP son descartados.
+
+![Pruebas de Socket Exitosas y Bloqueadas](IMAGES/socket_tests_jump_to_web.png)
+![Logs de Firewall para Tráfico Inter-Servidores](IMAGES/fortigate_log_jump_to_web.png)
+
+---
+
+### Requisito 5: Demostración de Servicios RemoteApp Web Client y Diferenciación de Roles
+Acceso al portal web de Apache Guacamole en `http://10.25.68.130:8080/guacamole/` validando la segregación de funciones entre los perfiles solicitados.
+
+#### A. Usuario Sin Privilegios (`usr_caja`): Acceso Exclusivo a Web
+![Login y Panel de Usuario Caja](IMAGES/guacamole_usr_caja_dashboard.png)
+![Acceso al Sistema de Caja Web](IMAGES/guacamole_caja_web_view.png)
+
+#### B. Usuario Con Privilegios (`usr_admin`): Publicación Completa (Web, SSH, RDP)
+![Panel Completo de Usuario Admin](IMAGES/guacamole_usr_admin_dashboard.png)
+![Sesión SSH Interactiva en el Navegador](IMAGES/guacamole_ssh_session.png)
+![Sesión de Escritorio Remoto RDP en el Navegador](IMAGES/guacamole_rdp_session.png)
+
+---
+
+## ⚠️ Declaración de Uso de Inteligencia Artificial
+
+En cumplimiento con las directrices académicas e institucionales de integridad y transparencia:
+
+* **Herramientas utilizadas:** Modelos de lenguaje e inteligencia artificial generativa asistieron en la consulta de sintaxis, estructuración de archivos de configuración y formateo de la documentación técnica.
+* **Alcance del uso:** La herramienta sirvió de soporte técnico para la redacción y resolución de incompatibilidades de entorno.
+* **Autoría y validación:** El diseño topológico, la implementación en laboratorio, el enrutamiento y aprovisionamiento en Cisco IOS, la parametrización gráfica de políticas y VPN en FortiOS, y las pruebas de auditoría fueron configuradas, probadas y validadas íntegramente por el autor del proyecto.
