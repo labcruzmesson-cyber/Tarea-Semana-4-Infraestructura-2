@@ -1,10 +1,10 @@
 # Implementación de Acceso Remoto Seguro (SSL-VPN) con Jump Server y Microsegmentación Perimetral
 
-[![Demostración en Video](https://img.shields.io/badge/Video-Demostración%20en%20YouTube-red?style=for-the-badge&logo=youtube)](https://TU-ENLACE-DE-VIDEO-AQUI.com)
+[![Demostración en Video](https://img.shields.io/badge/Video-Demostración%20en%20YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/XW7uTLlMQ9U)
 
 > **Autor:** Manuel Alejandro Cruz Messón  
 > **Matrícula:** 2025-0689  
-> **Enlace del Video:** [Ver Demostración Técnica en YouTube](https://TU-ENLACE-DE-VIDEO-AQUI.com)
+> **Enlace del Video:** [https://youtu.be/XW7uTLlMQ9U](https://youtu.be/XW7uTLlMQ9U)
 
 ---
 
