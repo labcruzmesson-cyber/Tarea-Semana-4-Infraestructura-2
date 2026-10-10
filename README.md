@@ -17,7 +17,7 @@ La solución proporciona a los usuarios de la red LAN (VLAN 10) acceso remoto ci
 
 ## 2. Diagrama de la Topología
 
-![Topología de Red](IMAGES/topologia.png)
+![Topología de Red](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/topologia.png)
 
 ### Plan de Direccionamiento IP (Matrícula: 2025-0689)
 | Segmento / Función | Dispositivo / Interfaz | Subred / CIDR | Máscara | Gateway | IP Asignada / Rango |
@@ -88,7 +88,7 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 
 ### A. Interfaces Físicas de Red (`Network > Interfaces`)
 
-![Interfaces FortiGate](IMAGES/fortigate_interfaces.png)
+![Interfaces FortiGate](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/forti-interfaces.png)
 
 * **`port1` (WAN):** IP `192.168.145.140/24`, acceso administrativo HTTPS/SSH/PING habilitado.
 * **`port2` (LAN_JUMPSERVER):** IP `10.25.68.129/255.255.255.248` (`/29`).
@@ -98,7 +98,7 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 
 ### B. Tabla de Enrutamiento Estático (`Network > Static Routes`)
 
-![Rutas Estáticas](IMAGES/fortigate_static_routes.png)
+![Rutas Estáticas](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/forti-rutas-estaticas.png)
 
 | Destino / Subred | Gateway | Interfaz | Estado | Propósito |
 | :--- | :--- | :--- | :---: | :--- |
@@ -108,7 +108,7 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 
 ### C. Objetos de Red y Servicios (`Policy & Objects > Addresses`)
 
-![Objetos de Red](IMAGES/fortigate_addresses.png)
+![Objetos de Red](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/forti-address.png)
 
 | Nombre del Objeto | Tipo | IP / Máscara | Propósito en la Topología |
 | :--- | :---: | :--- | :--- |
@@ -120,7 +120,7 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 
 ### D. Ajustes de SSL-VPN y Portal (`VPN > SSL-VPN`)
 
-![Configuración SSL-VPN](IMAGES/fortigate_sslvpn_settings.png)
+![Configuración SSL-VPN](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/forti-ajuste-ssl.png)
 
 * **Portal `PORTAL_JUMP_ONLY`:** Modo túnel activo, Split Tunneling habilitado enrutando exclusivamente a `HOST_JUMP_SERVER`.
 * **SSL-VPN Settings:** Escucha en `port1`, puerto `10443`, mapeo del grupo `GRP_VPN_USERS` asociado al portal.
@@ -129,7 +129,7 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 
 ### E. Políticas de Firewall (`Policy & Objects > Firewall Policy`)
 
-![Políticas de Firewall](IMAGES/fortigate_firewall_policies.png)
+![Políticas de Firewall](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/Forti-firewall-policies.png)
 
 | ID / Nombre | Interfaz Entrada | Interfaz Salida | Origen | Destino | Servicio | Acción |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -145,34 +145,34 @@ Esta sección documenta los componentes configurados desde la interfaz web del f
 ### Requisito 1: Segmentación, DHCP en Cisco (/25) y Enlace WAN
 Concesión de direccionamiento dinámico por DHCP desde el router Cisco hacia los clientes de la VLAN 10 y validación de conectividad WAN hacia el FortiGate.
 
-![DHCP y Direccionamiento en Cisco](IMAGES/cisco_dhcp_vlan10.png)
-![Conectividad WAN Cisco a FortiGate](IMAGES/cisco_wan_connectivity.png)
-![IP Obtenida en Cliente Ubuntu](IMAGES/client_dhcp_ip.png)
+![DHCP y Direccionamiento en Cisco](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/dhcp-vlan-10.png)
+![Conectividad WAN Cisco a FortiGate](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/cisco_wan_connectivity.png)
+![IP Obtenida en Cliente Ubuntu](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/cliente-dhcp.png)
 
 ---
 
 ### Requisito 2: Establecimiento de SSL-VPN y Acceso Exclusivo al Jump Server
 Demostración del túnel SSL-VPN activo y verificación de alcance positivo hacia el Jump Server (`10.25.68.130`).
 
-![Túnel SSL-VPN Conectado](IMAGES/sslvpn_connected_cli.png)
-![Monitor de Sesiones SSL-VPN en FortiGate](IMAGES/fortigate_sslvpn_monitor.png)
-![Ping Exitoso a Jump Server](IMAGES/ping_jumpserver_success.png)
+![Túnel SSL-VPN Conectado](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/ssl-conectado.png)
+![Monitor de Sesiones SSL-VPN en FortiGate](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/ssl-monitor.png)
+![Ping Exitoso a Jump Server](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/jump-server-allow.png)
+![Log](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/jump-server-allow-log.png)
 
 ---
 
 ### Requisito 3: Bloqueo Estricto de Acceso Directo al Web Server (Menor Privilegio)
 Demostración de denegación de tráfico desde la máquina remota hacia el Web Server (`10.25.68.138`) con registro explícito en los logs del firewall.
 
-![Intento de Ping y Conexión Denegado](IMAGES/ping_webserver_denied.png)
-![Log de Rechazo en FortiGate Forward Traffic](IMAGES/fortigate_log_deny_webserver.png)
+![Intento de Ping y Conexión Denegado](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/ping-web-server-deny.png)
 
 ---
 
 ### Requisito 4: Filtrado Granular Inter-Servidores (Jump Server -> Web Server)
 Pruebas de sockets TCP desde el Jump Server hacia el Web Server evidenciando que únicamente los servicios autorizados (**HTTPS: 443**, **RDP: 3389**, **SSH: 22**) responden favorablemente, mientras que otros servicios y tráfico ICMP son descartados.
 
-![Pruebas de Socket Exitosas y Bloqueadas](IMAGES/socket_tests_jump_to_web.png)
-![Logs de Firewall para Tráfico Inter-Servidores](IMAGES/fortigate_log_jump_to_web.png)
+![Pruebas de Socket Exitosas y Bloqueadas](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/sockets-tets-jump-server.png)
+![Logs de Firewall para Tráfico Inter-Servidores](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/fortigate_log_jump_to_web..png).
 
 ---
 
@@ -180,13 +180,14 @@ Pruebas de sockets TCP desde el Jump Server hacia el Web Server evidenciando que
 Acceso al portal web de Apache Guacamole en `http://10.25.68.130:8080/guacamole/` validando la segregación de funciones entre los perfiles solicitados.
 
 #### A. Usuario Sin Privilegios (`usr_caja`): Acceso Exclusivo a Web
-![Login y Panel de Usuario Caja](IMAGES/guacamole_usr_caja_dashboard.png)
-![Acceso al Sistema de Caja Web](IMAGES/guacamole_caja_web_view.png)
+![Login y Panel de Usuario Caja](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/guacamole_caja_web_view-1.png)
+![Acceso al Sistema de Caja Web](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/guacamole_caja_web_view-2.png)
 
 #### B. Usuario Con Privilegios (`usr_admin`): Publicación Completa (Web, SSH, RDP)
-![Panel Completo de Usuario Admin](IMAGES/guacamole_usr_admin_dashboard.png)
-![Sesión SSH Interactiva en el Navegador](IMAGES/guacamole_ssh_session.png)
-![Sesión de Escritorio Remoto RDP en el Navegador](IMAGES/guacamole_rdp_session.png)
+![Panel Completo de Usuario Admin](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/guacamole_usr_admin_dashboard.png)
+![Panel Completo de Usuario Admin](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/guacamole_usr_admin_dashboard-2.png)
+![Sesión SSH Interactiva en el Navegador](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/guacamole_ssh_session..png)
+![Sesión de Escritorio Remoto RDP en el Navegador](https://github.com/labcruzmesson-cyber/Tarea-Semana-4-Infraestructura-2/blob/main/IMAGES/guacamole_rdp_session.png)
 
 ---
 
